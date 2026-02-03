@@ -86,10 +86,13 @@ async def virtual_try_on_hd(
         
         processing_time = time.time() - start_time
         
+        # Generate accessible URL for frontend
+        image_url = f"/outputs/{output_path.name}"
+        
         logger.info(f"HD try-on completed in {processing_time:.2f}s, output: {output_path.name}")
         
         return VirtualTryOnResponse(
-            image_url=str(output_path),
+            image_url=image_url,
             message="Virtual try-on completed successfully",
             category="HD",
             processing_time=processing_time
@@ -154,10 +157,13 @@ async def virtual_try_on_dc(
         
         processing_time = time.time() - start_time
         
+        # Generate accessible URL for frontend
+        image_url = f"/outputs/{output_path.name}"
+        
         logger.info(f"DC try-on completed in {processing_time:.2f}s, output: {output_path.name}")
         
         return VirtualTryOnResponse(
-            image_url=str(output_path),
+            image_url=image_url,
             message="Virtual try-on completed successfully",
             category=category.value,
             processing_time=processing_time
@@ -209,10 +215,13 @@ async def virtual_try_on_imagen(
         
         processing_time = time.time() - start_time
         
+        # Generate accessible URL for frontend
+        image_url = f"/outputs/{output_path.name}"
+        
         logger.info(f"Imagen try-on completed in {processing_time:.2f}s, output: {output_path.name}")
         
         return VirtualTryOnResponse(
-            image_url=str(output_path),
+            image_url=image_url,
             message="Virtual try-on with Imagen completed successfully",
             category="Imagen AI",
             processing_time=processing_time

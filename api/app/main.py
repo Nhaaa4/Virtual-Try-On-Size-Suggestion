@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 
 from app.core.config import settings
 from app.core.logging import setup_logging, client_ip_filter
@@ -49,6 +51,11 @@ async def add_client_ip(request: Request, call_next):
     response = await call_next(request)
     return response
 
+# Mount static files for serving output images
+output_dir = Path("temp/output")
+output_dir.mkdir(parents=True, exist_ok=True)
+app.mount("/outputs", StaticFiles(directory=str(output_dir)), name="outputs")
+
 @app.get("/")
 async def root():
     messages = {
@@ -56,6 +63,7 @@ async def root():
         "redoc": "http://localhost:8000/redoc"
     }
     return messages
+
 # Include routers
 app.include_router(size_routing.router, prefix="/api/size-suggestion", tags=["Size Suggestion"])
 app.include_router(tryon_routing.router, prefix="/api/virtual-tryon", tags=["Virtual Try-On"])
