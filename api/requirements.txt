@@ -9,3 +9,6 @@ pandas
 gradio-client
 google-genai
 pydantic_settings
+Pillow
+huggingface-hub
+python-dotenv
