@@ -77,3 +77,10 @@ htmlcov/
 # Database
 *.db
 *.sqlite3
+
+# Large downloaded files
+*.tar.gz
+*.zip
+
+# TensorFlow/Keras models (optional - uncomment if you want to exclude)
+# *.keras
