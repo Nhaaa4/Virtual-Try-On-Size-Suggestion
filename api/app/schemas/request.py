@@ -1,6 +1,9 @@
 from pydantic import BaseModel, Field, field_validator
 from enum import Enum
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from fastapi import UploadFile
 
 
 class ModelType(str, Enum):
@@ -30,31 +33,3 @@ class GarmentCategory(str, Enum):
     LOWER_BODY = "Lower-body"
     DRESS = "Dress"
 
-
-class VirtualTryOnRequest(BaseModel):
-    category: GarmentCategory = Field(
-        default=GarmentCategory.UPPER_BODY,
-        description="Category of garment: Upper-body, Lower-body, or Dress"
-    )
-    n_samples: int = Field(
-        default=1,
-        ge=1,
-        le=4,
-        description="Number of samples to generate (1-4)"
-    )
-    n_steps: int = Field(
-        default=20,
-        ge=20,
-        le=40,
-        description="Number of diffusion steps (20-40)"
-    )
-    image_scale: float = Field(
-        default=2.0,
-        ge=1.0,
-        le=5.0,
-        description="Image scale factor (1-5)"
-    )
-    seed: int = Field(
-        default=-1,
-        description="Random seed for reproducibility (-1 for random)"
-    )

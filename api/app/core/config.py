@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     MODEL_VERSION: str
     LOG_LEVEL: str = "INFO"
     GEMINI_API_KEY: str = ""
+    GOOGLE_CLOUD_PROJECT: str
+    GOOGLE_CLOUD_LOCATION: str
+    GOOGLE_GENAI_USE_VERTEXAI: bool = True
+    VIRTUAL_TRY_ON_MODEL: str
     
     @property
     def MODEL_PATHS(self) -> Dict[str, str]:

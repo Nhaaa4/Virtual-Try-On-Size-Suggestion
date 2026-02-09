@@ -6,7 +6,7 @@ This project is a comprehensive AI-powered fashion technology solution that comb
 
 The system leverages:
 - **OOTDiffusion** for high-quality virtual try-on generation
-- **Google's Imagen** via Gemini API for AI-generated try-on images
+- **Google Virtual Try-On** via Gemini API for AI-generated try-on images
 - **Machine Learning models** (Decision Tree and Neural Network) for accurate size predictions
 - **FastAPI** for a robust and scalable REST API architecture
 
@@ -40,16 +40,22 @@ api/
 │   │   └── response.py         # Response schemas
 │   └── services/               # Business logic
 │       ├── file_handler.py     # File upload/download handling
-│       ├── gemini_service.py   # Gemini API integration
 │       ├── model_loader.py     # ML model loading
 │       ├── predictor.py        # Prediction logic
 │       └── preprocessor.py     # Data preprocessing
+├── data/
+|   └── final_dataset.csv       # Dataset
 ├── models/                     # Trained ML models
 │   ├── decision_tree_model.pkl
 │   └── mlp_model.pkl
+├── notebooks
+|   ├── gemini_services.ipynb   #
+|   ├── OOTDiffusion.ipynb      #
+|   └── size_suggestion.ipynb   #
 ├── temp/                       # Temporary file storage
 │   ├── upload/                 # Uploaded images
 │   └── output/                 # Generated results
+├── .env                        # Local Environment Variable
 ├── requirements.txt            # Python dependencies
 └── README.md                   # This file
 ```
@@ -57,7 +63,7 @@ api/
 ## Project Setup
 
 ### Prerequisites
-- Python 3.8 or higher
+- Python 3.11 or higher
 - pip (Python package manager)
 - Virtual environment (recommended)
 
@@ -71,13 +77,13 @@ api/
 2. **Create and activate a virtual environment**
    ```bash
    # Create virtual environment
-   python -m venv venv
+   python -m venv .venv
    
    # Activate on Linux/Mac
-   source venv/bin/activate
+   source .venv/bin/activate
    
    # Activate on Windows
-   # venv\Scripts\activate
+   # .venv\Scripts\activate
    ```
 
 3. **Install dependencies**
@@ -89,206 +95,81 @@ api/
    
    Create a `.env` file in the root directory:
    ```env
-   MODEL_DECISION_TREE_PATH=models/decision_tree_model.pkl
-   MODEL_NEURAL_NETWORK_PATH=models/mlp_model.pkl
-   MODEL_VERSION=1.0.0
-   LOG_LEVEL=INFO
-   GEMINI_API_KEY=your_gemini_api_key_here
+   MODEL_DECISION_TREE_PATH="models/decision_tree_model.pkl"
+   MODEL_NEURAL_NETWORK_PATH="models/mlp_model.pkl"
+   MODEL_VERSION="dev"
+
+   GOOGLE_CLOUD_PROJECT=your-gcp-project-id
+   GOOGLE_CLOUD_LOCATION=us-central1
+   GOOGLE_GENAI_USE_VERTEXAI=true
+   VIRTUAL_TRY_ON_MODEL="virtual-try-on-001"
    ```
 
-5. **Ensure required directories exist**
-   ```bash
-   mkdir -p temp/upload temp/output data
-   ```
-
-6. **Run the application**
-   ```bash
-   # Development mode with auto-reload
-   python -m app.main
+5. **Authenticate with Hugging Face** (Required for OOTDiffusion)
    
-   # Or using uvicorn directly
+   The OOTDiffusion model on Hugging Face may require authentication. Set up your Hugging Face token:
+   
+   ```bash
+   # Install huggingface-hub if not already installed
+   pip install huggingface-hub
+   
+   # Login with your Hugging Face token
+   huggingface-cli login
+   ```
+
+   When prompted, paste your Hugging Face token. Get your token from: https://huggingface.co/settings/tokens
+
+   More details: [link](./docs/AUTHENTICATION.md#1-hugging-face-authentication)
+
+6. **Authenticate with Google Cloud** (Required for Gemini Virtual Try-On)
+   
+   For Vertex AI and Gemini API access:
+   
+   ```bash
+   # Install Google Cloud SDK if not already installed
+   # Download from: https://cloud.google.com/sdk/docs/install
+   
+   # Login to Google Cloud
+   gcloud auth login
+   
+   # Set your project
+   gcloud config set project YOUR_PROJECT_ID
+   
+   # Authenticate for application default credentials
+   gcloud auth application-default login
+   
+   # Enable required APIs
+   gcloud services enable aiplatform.googleapis.com
+   gcloud services enable generativelanguage.googleapis.com
+   ```
+   
+   Make sure your Google Cloud project has:
+   - Vertex AI API enabled
+   - Generative Language API enabled
+   - Appropriate billing configured
+
+   More details: [link](./docs/AUTHENTICATION.md#2-google-cloud-authentication)
+
+  > ** Detailed Authentication Guide:** See [AUTHENTICATION.md](./docs/AUTHENTICATION.md) for comprehensive setup instructions, troubleshooting, and best practices.
+
+7. **Ensure required directories exist**
+   ```bash
+   # On Linux/Mac
+   mkdir -p temp/upload temp/output data
+   
+   # On Windows PowerShell
+   New-Item -ItemType Directory -Force -Path temp\upload, temp\output, data
+   ```
+
+8. **Run the application**
+   ```bash
+   # using uvicorn 
    uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
    ```
 
-7. **Access the API documentation**
+9. **Access the API documentation**
    - Swagger UI: http://localhost:8000/docs
    - ReDoc: http://localhost:8000/redoc
-
-## API Endpoints
-
-### Size Suggestion API
-
-- **Base URL**: `/api/size-suggestion`
-- `GET /` - Health check
-- `POST /predict` - Get size recommendation
-- `GET /models` - Check available models status
-
-### Virtual Try-On API
-
-- **Base URL**: `/api/virtual-tryon`
-- `GET /` - Health check
-- `POST /try-on-hd` - Generate HD virtual try-on (OOTDiffusion)
-- `POST /try-on-ai` - Generate AI virtual try-on (Gemini Imagen)
-
-## Testing with Postman
-
-### Setup Postman
-
-1. **Install Postman** from https://www.postman.com/downloads/
-2. **Create a new collection** named "Virtual Try-On & Size Suggestion API"
-
-### Test 1: Size Prediction (Decision Tree)
-
-**Request:**
-- **Method**: `POST`
-- **URL**: `http://localhost:8000/api/size-suggestion/predict`
-- **Headers**: 
-  ```
-  Content-Type: application/json
-  ```
-- **Body** (raw JSON):
-  ```json
-  {
-    "age": 25,
-    "height": 170,
-    "weight": 65,
-    "model_type": "decision_tree"
-  }
-  ```
-
-**Expected Response:**
-```json
-{
-  "recommended_size": "M",
-  "model_used": "decision_tree",
-  "confidence": 0.95,
-  "user_measurements": {
-    "age": 25,
-    "height": 170,
-    "weight": 65
-  }
-}
-```
-
-### Test 2: Size Prediction (Neural Network)
-
-**Request:**
-- **Method**: `POST`
-- **URL**: `http://localhost:8000/api/size-suggestion/predict`
-- **Headers**: 
-  ```
-  Content-Type: application/json
-  ```
-- **Body** (raw JSON):
-  ```json
-  {
-    "age": 30,
-    "height": 175,
-    "weight": 70,
-    "model_type": "neural_network"
-  }
-  ```
-
-**Expected Response:**
-```json
-{
-  "recommended_size": "L",
-  "model_used": "neural_network",
-  "confidence": 0.92,
-  "user_measurements": {
-    "age": 30,
-    "height": 175,
-    "weight": 70
-  }
-}
-```
-
-### Test 3: Check Models Status
-
-**Request:**
-- **Method**: `GET`
-- **URL**: `http://localhost:8000/api/size-suggestion/models`
-
-**Expected Response:**
-```json
-{
-  "loaded_models": ["decision_tree", "neural_network"],
-  "total_models": 2,
-  "model_details": {
-    "decision_tree": {
-      "status": "ready",
-      "path": "models/decision_tree_model.pkl"
-    },
-    "neural_network": {
-      "status": "ready",
-      "path": "models/mlp_model.pkl"
-    }
-  }
-}
-```
-
-### Test 4: Virtual Try-On HD (OOTDiffusion)
-
-**Request:**
-- **Method**: `POST`
-- **URL**: `http://localhost:8000/api/virtual-tryon/try-on-hd`
-- **Headers**: 
-  ```
-  (Postman will auto-set Content-Type: multipart/form-data)
-  ```
-- **Body** (form-data):
-  - Key: `vton_img` | Type: File | Value: [Select person image]
-  - Key: `garm_img` | Type: File | Value: [Select garment image]
-
-**Expected Response:**
-```json
-{
-  "success": true,
-  "output_image": "base64_encoded_image_string_here",
-  "processing_time": 15.42,
-  "message": "Virtual try-on completed successfully",
-  "method": "ootdiffusion"
-}
-```
-
-### Test 5: Virtual Try-On AI (Gemini Imagen)
-
-**Request:**
-- **Method**: `POST`
-- **URL**: `http://localhost:8000/api/virtual-tryon/try-on-ai`
-- **Headers**: 
-  ```
-  (Postman will auto-set Content-Type: multipart/form-data)
-  ```
-- **Body** (form-data):
-  - Key: `vton_img` | Type: File | Value: [Select person image]
-  - Key: `garm_img` | Type: File | Value: [Select garment image]
-  - Key: `category` | Type: Text | Value: `Upper-body` (or `Lower-body`, `Dress`)
-
-**Expected Response:**
-```json
-{
-  "success": true,
-  "output_image": "base64_encoded_image_string_here",
-  "processing_time": 8.23,
-  "message": "AI-generated try-on completed successfully",
-  "method": "gemini_imagen"
-}
-```
-
-### Test 6: Health Check
-
-**Request:**
-- **Method**: `GET`
-- **URL**: `http://localhost:8000/`
-
-**Expected Response:**
-```json
-{
-  "docs": "http://localhost:8000/docs",
-  "redoc": "http://localhost:8000/redoc"
-}
-```
 
 ## Postman Testing Tips
 
@@ -302,15 +183,17 @@ api/
    - Recommended formats: JPG, PNG
    - Recommended size: Under 10MB
 
-3. **Save Responses**: 
-   - Click on the response body
-   - For base64 images, use online tools to decode and view results
-   - Or write a Postman test script to auto-save images
+3. **View Generated Images**: 
+   - The API returns a relative URL in `image_url` field
+   - Access images via: `http://localhost:8000` + `image_url`
+   - Example: `http://localhost:8000/outputs/hd_tryon_abc123.jpg`
+   - You can also browse all outputs at `http://localhost:8000/outputs/`
 
 4. **Error Handling Test Cases**:
    - Invalid data (negative values, missing fields)
    - Unsupported file types
    - Missing API keys (for Gemini endpoints)
+   - Missing authentication (Hugging Face token, Google Cloud credentials)
 
 5. **Collection Export**: Save your Postman collection for reuse:
    - Click on collection → Export → Collection v2.1
@@ -325,16 +208,24 @@ api/
    - Check file paths in `.env` configuration
 
 2. **Gemini API Errors**
-   - Verify `GEMINI_API_KEY` is set correctly in `.env`
    - Check API quota and billing status
 
 3. **OOTDiffusion Connection Failed**
    - Check internet connection
    - Gradio space might be temporarily unavailable
+   - Verify Hugging Face authentication: `huggingface-cli whoami`
+   - Try logging in again: `huggingface-cli login`
 
 4. **File Upload Errors**
    - Ensure `temp/upload` and `temp/output` directories exist
    - Check file size limits and permissions
+
+5. **Google Cloud / Vertex AI Errors**
+   - Verify authentication: `gcloud auth list`
+   - Check project is set: `gcloud config get-value project`
+   - Ensure APIs are enabled: `gcloud services list --enabled`
+   - Verify application default credentials: `gcloud auth application-default print-access-token`
+   - Check billing is enabled for your project
 
 ## Technology Stack
 
@@ -358,4 +249,3 @@ This project is developed as part of academic coursework at Cambodia Academy of 
 
 **Version**: 1.0.0  
 **Last Updated**: February 2026  
-**Developed by**: Capstone II Team
