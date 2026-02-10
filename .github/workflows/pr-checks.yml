@@ -65,30 +65,40 @@ jobs:
         if [ -f api/requirements.txt ]; then
           pip install flake8
           cd api
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           cd ..
         else
-          echo "Skipping Python linting"
+          echo "Skipping Python linting - no requirements.txt found"
         fi
 
     - name: Lint Frontend code
       run: |
         if [ -f frontend/package.json ]; then
           cd frontend
-          npm run lint || echo "No lint script found"
+          if npm run lint --if-present; then
+            echo "Linting completed successfully"
+          else
+            echo "Linting failed or no lint script found"
+            exit 0
+          fi
           cd ..
         else
-          echo "Skipping Frontend linting"
+          echo "Skipping Frontend linting - no package.json found"
         fi
 
     - name: Build Frontend
       run: |
         if [ -f frontend/package.json ]; then
           cd frontend
-          npm run build || echo "Build completed with warnings"
+          if npm run build --if-present; then
+            echo "Build completed successfully"
+          else
+            echo "Build failed or no build script found"
+            exit 0
+          fi
           cd ..
         else
-          echo "Skipping Frontend build"
+          echo "Skipping Frontend build - no package.json found"
         fi
 
     - name: PR checks completed
