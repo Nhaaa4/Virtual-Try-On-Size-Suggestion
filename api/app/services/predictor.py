@@ -27,17 +27,12 @@ class Predictor:
     
     def predict(self, request: PredictRequest) -> PredictResponse:
         try:
-            # Preprocess input (IQR outlier detection + StandardScaler normalization)
-            standardized_data, outlier_info = self.preprocessor.preprocess_input(
+            # Preprocess input (StandardScaler normalization)
+            standardized_data = self.preprocessor.preprocess_input(
                 age=request.age,
                 height=request.height,
                 weight=request.weight
             )
-            
-            # Check for outliers
-            has_outliers = any(info['is_outlier'] for info in outlier_info.values())
-            if has_outliers:
-                logger.warning("⚠️  Input contains outliers - prediction may be less reliable")
             
             # Ensure feature order is correct
             standardized_data = standardized_data[self.FEATURE_ORDER]

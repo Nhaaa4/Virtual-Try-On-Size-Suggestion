@@ -3,12 +3,6 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 // Virtual Try-On API Service
 export const virtualTryOnAPI = {
-  /**
-   * Try-On with HD Model
-   * @param {File} personImage - Person image file
-   * @param {File} garmentImage - Garment image file
-   * @returns {Promise} API response
-   */
   tryOnHD: async (personImage, garmentImage) => {
     const formData = new FormData();
     formData.append('vton_img', personImage);
@@ -26,13 +20,6 @@ export const virtualTryOnAPI = {
     return response.json();
   },
 
-  /**
-   * Try-On with DC Model
-   * @param {File} personImage - Person image file
-   * @param {File} garmentImage - Garment image file
-   * @param {string} category - Garment category (Upper-body, Lower-body, Dress)
-   * @returns {Promise} API response
-   */
   tryOnDC: async (personImage, garmentImage, category = 'Upper-body') => {
     const formData = new FormData();
     formData.append('vton_img', personImage);
@@ -51,12 +38,6 @@ export const virtualTryOnAPI = {
     return response.json();
   },
 
-  /**
-   * Try-On with Google Gemini Model
-   * @param {File} personImage - Person image file
-   * @param {File} garmentImage - Garment image file
-   * @returns {Promise} API response
-   */
   tryOnGemini: async (personImage, garmentImage) => {
     const formData = new FormData();
     formData.append('vton_img', personImage);
@@ -77,14 +58,7 @@ export const virtualTryOnAPI = {
 
 // Size Suggestion API Service
 export const sizeSuggestionAPI = {
-  /**
-   * Get size prediction based on body measurements
-   * @param {number} age - Age in years
-   * @param {number} height - Height in centimeters
-   * @param {number} weight - Weight in kilograms
-   * @param {string} modelType - Model type (decision_tree or neural_network)
-   * @returns {Promise} API response
-   */
+
   predict: async (age, height, weight, modelType = 'decision_tree') => {
     const response = await fetch(`${API_BASE_URL}/api/size-suggestion/predict`, {
       method: 'POST',
@@ -106,10 +80,6 @@ export const sizeSuggestionAPI = {
     return response.json();
   },
 
-  /**
-   * Get available models
-   * @returns {Promise} API response with available models
-   */
   getModels: async () => {
     const response = await fetch(`${API_BASE_URL}/api/size-suggestion/models`, {
       method: 'GET',

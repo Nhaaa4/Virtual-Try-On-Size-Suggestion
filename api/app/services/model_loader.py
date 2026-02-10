@@ -20,33 +20,20 @@ class ModelLoader:
         self.preprocessor = DataPreprocessor()
     
     def load_model(self) -> bool:
-        # Load preprocessing statistics and StandardScaler
+        # Load StandardScaler
         try:
-            data_path = Path("data/final_test.csv")
             scaler_path = Path(settings.FEATURE_SCALER_PATH)
             
-            logger.info("Loading preprocessor with IQR outlier detection and StandardScaler...")
+            logger.info("Loading StandardScaler for feature normalization...")
             
-            if data_path.exists():
-                self.preprocessor.load_stats_from_data(
-                    data_path=str(data_path),
-                    scaler_path=str(scaler_path)
-                )
-                logger.info("Preprocessor loaded successfully")
+            if scaler_path.exists():
+                self.preprocessor.load_scaler(scaler_path=str(scaler_path))
+                logger.info("StandardScaler loaded successfully")
             else:
-                logger.warning(f"Training data not found at {data_path}")
-                # Still try to load scaler
-                if scaler_path.exists():
-                    self.preprocessor.load_stats_from_data(
-                        data_path=None,
-                        scaler_path=str(scaler_path)
-                    )
-                    logger.info("StandardScaler loaded (without IQR bounds)")
-                else:
-                    logger.error(f"StandardScaler not found at {scaler_path}")
+                logger.error(f"StandardScaler not found at {scaler_path}")
                     
         except Exception as e:
-            logger.error(f"Could not load preprocessor: {e}", exc_info=True)
+            logger.error(f"Could not load scaler: {e}", exc_info=True)
         
         success_count = 0
         
