@@ -27,18 +27,23 @@ class Predictor:
     
     def predict(self, request: PredictRequest) -> PredictResponse:
         try:
-            # Preprocess input (z-score normalization, outlier handling)
-            input_data = self.preprocessor.preprocess_input(
+            # Preprocess input (IQR outlier detection + StandardScaler normalization)
+            standardized_data, outlier_info = self.preprocessor.preprocess_input(
                 age=request.age,
                 height=request.height,
                 weight=request.weight
             )
             
+            # Check for outliers
+            has_outliers = any(info['is_outlier'] for info in outlier_info.values())
+            if has_outliers:
+                logger.warning("⚠️  Input contains outliers - prediction may be less reliable")
+            
             # Ensure feature order is correct
-            input_data = input_data[self.FEATURE_ORDER]
+            standardized_data = standardized_data[self.FEATURE_ORDER]
             
             # Get prediction
-            recommended_size_num = self.model.predict(input_data)[0]
+            recommended_size_num = self.model.predict(standardized_data)[0]
             
             # Convert numeric prediction to size label
             recommended_size = self.preprocessor.postprocess_output(recommended_size_num)
@@ -49,7 +54,7 @@ class Predictor:
             
             if hasattr(self.model, "predict_proba"):
                 try:
-                    probas = self.model.predict_proba(input_data)[0]
+                    probas = self.model.predict_proba(standardized_data)[0]
                     classes = self.model.classes_
                     
                     # Get top 3 with scores
