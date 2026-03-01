@@ -1,6 +1,13 @@
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
+// Category display name to API value mapping
+export const CATEGORY_MAP = {
+  'Upper-body': 'upperbody',
+  'Lower-body': 'lowerbody',
+  'Dresses': 'dress',
+};
+
 // Virtual Try-On API Service
 export const virtualTryOnAPI = {
   tryOnHD: async (personImage, garmentImage) => {
@@ -20,7 +27,7 @@ export const virtualTryOnAPI = {
     return response.json();
   },
 
-  tryOnDC: async (personImage, garmentImage, category = 'Upper-body') => {
+  tryOnDC: async (personImage, garmentImage, category = 'upperbody') => {
     const formData = new FormData();
     formData.append('vton_img', personImage);
     formData.append('garm_img', garmentImage);
@@ -92,6 +99,26 @@ export const sizeSuggestionAPI = {
     return response.json();
   },
 };
+
+export const bodyMeasurementAPI = {
+  predict: async (front, leftSide, heightCm) => {
+    const formData = new FormData();
+    formData.append('front', front);
+    formData.append('left_side', leftSide);
+    formData.append('height_cm', heightCm);
+
+    const response = await fetch(`${API_BASE_URL}/api/body-measurements/measure`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to predict body measurements');
+    }
+
+    return response.json();
+  }
+}
 
 // Utility function to get full image URL
 export const getImageURL = (imagePath) => {

@@ -1,9 +1,6 @@
 from pydantic import BaseModel, Field, field_validator
 from enum import Enum
-from typing import Optional, TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from fastapi import UploadFile
+from typing import List, Optional
 
 
 class ModelType(str, Enum):
@@ -28,8 +25,13 @@ class PredictRequest(BaseModel):
         return v
 
 
-class GarmentCategory(str, Enum):
-    UPPER_BODY = "Upper-body"
-    LOWER_BODY = "Lower-body"
-    DRESS = "Dress"
+class Alternative(BaseModel):
+    size: str
+    score: float
 
+
+class PredictResponse(BaseModel):
+    recommended_size: str
+    alternatives: List[Alternative]
+    model_version: str
+    alternatives_note: Optional[str] = None

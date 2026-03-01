@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { virtualTryOnAPI } from '../services/api';
+import { virtualTryOnAPI, CATEGORY_MAP } from '../services/api';
 import { urlToFile } from '../services/defaultGarments';
 import { urlToFile as modelUrlToFile } from '../services/defaultModels';
 import ImageUpload from './VirtualTryOn/ImageUpload';
@@ -99,7 +99,7 @@ export default function VirtualTryOn() {
       if (model === 'hd') {
         data = await virtualTryOnAPI.tryOnHD(personImage, garmentImage);
       } else if (model === 'dc') {
-        data = await virtualTryOnAPI.tryOnDC(personImage, garmentImage, category);
+        data = await virtualTryOnAPI.tryOnDC(personImage, garmentImage, CATEGORY_MAP[category] ?? category);
       } else if (model === 'gemini') {
         data = await virtualTryOnAPI.tryOnGemini(personImage, garmentImage);
       }

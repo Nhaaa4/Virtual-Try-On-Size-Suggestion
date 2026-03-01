@@ -1,7 +1,8 @@
 export const defaultModels = [
   { id: 1, path: '/model/01409_00.jpg', name: 'Model 1' },
-  { id: 2, path: '/model/01543_00.jpg', name: 'Model 2' },
+  { id: 2, path: '/model/051962_0.jpg', name: 'Model 2' },
   { id: 3, path: '/model/visa_model.jpg', name: 'Model 3' },
+  { id: 4, path: '/model/01543_00.jpg', name: 'Model 4' },
 ];
 
 // Helper function to convert URL to File object

@@ -32,7 +32,22 @@ class DataPreprocessor:
             self.scaler = None
     
     def preprocess_input(self, age: float, height: float, weight: float) -> pd.DataFrame:
-
+        """
+        Preprocess input features for size prediction.
+        
+        Steps:
+        1. Create DataFrame with age, height, weight
+        2. Apply StandardScaler transformation (if loaded)
+        3. Add engineered features: bmi, weight-squared (if needed by model)
+        
+        Args:
+            age: Age in years
+            height: Height in cm
+            weight: Weight in kg
+            
+        Returns:
+            Preprocessed DataFrame ready for model prediction
+        """
         input_data = pd.DataFrame({
             'age': [age],
             'height': [height],
@@ -41,13 +56,19 @@ class DataPreprocessor:
         
         logger.debug(f"Raw input: age={age}, height={height}, weight={weight}")
         
+        # Add engineered features (must match training)
+        input_data['bmi'] = input_data['height'] / input_data['weight']
+        input_data['weight-squared'] = input_data['weight'] * input_data['weight']
+        
+        logger.debug(f"After feature engineering: {input_data.columns.tolist()}")
+        
         # Apply StandardScaler normalization
         if self.scaler is not None:
             standardized_data = pd.DataFrame(
                 self.scaler.transform(input_data),
-                columns=['age', 'height', 'weight']
+                columns=input_data.columns
             )
-            logger.debug(f"Standardized input: {standardized_data.values[0]}")
+            logger.debug(f"Standardized values: {standardized_data.values[0]}")
         else:
             logger.warning("No scaler loaded - using raw input (predictions may be incorrect!)")
             standardized_data = input_data
@@ -55,14 +76,13 @@ class DataPreprocessor:
         return standardized_data
     
     def postprocess_output(self, predicted_size: int) -> str:
+        """Convert predicted numeric label back to size string."""
         size_mapping = {
-            1: "XXS",
-            2: "S",
-            3: "M",
-            4: "L",
-            5: "XL",
-            6: "XXL",
-            7: "XXXL"
+            1: "S",
+            2: "M",
+            3: "L",
+            4: "XL",
+            5: "XXXL"
         }
         
         return size_mapping.get(int(predicted_size), f"Size_{predicted_size}")

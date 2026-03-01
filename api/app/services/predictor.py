@@ -2,8 +2,7 @@
 import numpy as np
 import pandas as pd
 from typing import List, Tuple
-from app.schemas.request import PredictRequest
-from app.schemas.response import PredictResponse, Alternative
+from app.schemas.size_suggestion import PredictRequest, PredictResponse, Alternative
 from app.core.config import settings
 from app.core.logging import get_logger
 from app.services.preprocessor import DataPreprocessor
@@ -13,7 +12,8 @@ logger = get_logger(__name__)
 
 
 class Predictor:
-    FEATURE_ORDER = ["age", "height", "weight"]
+    # Must match the feature order used during training
+    FEATURE_ORDER = ["age", "height", "weight", "bmi", "weight-squared"]
     
     MODEL_NAMES = {
         "decision_tree": "Decision Tree",

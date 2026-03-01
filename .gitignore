@@ -55,7 +55,7 @@ google-cloud-sdk/
 Thumbs.db
 
 # Model Files (optional - remove if you want to track models)
-*.pkl
+api/models/mediapipe/*
 *.h5
 *.pth
 *.onnx

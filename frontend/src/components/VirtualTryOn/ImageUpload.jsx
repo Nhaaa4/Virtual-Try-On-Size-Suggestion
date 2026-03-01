@@ -10,7 +10,7 @@ export default function ImageUpload({ type, preview, onImageChange, onRemove }) 
             <img
               src={preview}
               alt={type}
-              className={`mx-auto rounded-lg shadow-md ${type === 'person' ? 'max-h-64' : 'max-h-48'}`}
+              className={`mx-auto rounded-lg shadow-md`}
             />
             <button
               onClick={onRemove}
@@ -21,9 +21,9 @@ export default function ImageUpload({ type, preview, onImageChange, onRemove }) 
           </div>
         ) : (
           <label className="cursor-pointer block">
-            <div className={`flex flex-col items-center ${type === 'person' ? 'py-8' : 'py-6'}`}>
+            <div className={`flex flex-col items-center py-6`}>
               <svg
-                className={`text-gray-400 mb-3 ${type === 'person' ? 'w-16 h-16' : 'w-12 h-12'}`}
+                className={`text-gray-400 mb-3 w-16 h-16`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

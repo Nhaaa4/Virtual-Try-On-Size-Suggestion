@@ -13,8 +13,7 @@ from google.genai.types import (
     RecontextImageConfig,
     RecontextImageSource,
 )
-from app.schemas.request import GarmentCategory
-from app.schemas.response import VirtualTryOnResponse
+from app.schemas.virtual_tryon import GarmentCategory, VirtualTryOnResponse
 from app.services.file_handler import (
     save_upload_file,
     save_result_image,

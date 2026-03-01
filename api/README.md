@@ -77,7 +77,7 @@ api/
 2. **Create and activate a virtual environment**
    ```bash
    # Create virtual environment
-   python -m venv .venv
+   py -3.12 -m venv .venv
    
    # Activate on Linux/Mac
    source .venv/bin/activate

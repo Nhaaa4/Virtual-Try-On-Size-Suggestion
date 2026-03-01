@@ -13,7 +13,7 @@ function App() {
         
         <main className="py-8 px-4">
           <Routes>
-            <Route path="/" element={<Navigate to="/virtual-tryon" replace />} />
+            <Route path="/" element={<Navigate to="/body-measurements" replace />} />
             <Route path="/virtual-tryon" element={<VirtualTryOnPage />} />
             <Route path="/size-suggestion" element={<SizeSuggestionPage />} />
             <Route path="/body-measurements" element={<BodyMeasurementsPage />} />

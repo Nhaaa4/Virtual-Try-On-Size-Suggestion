@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Request, HTTPException
-from app.schemas.request import PredictRequest
-from app.schemas.response import PredictResponse
+from app.schemas.size_suggestion import PredictRequest, PredictResponse
 from app.services.predictor import Predictor
 from app.core.logging import get_logger
 from typing import Dict, Any

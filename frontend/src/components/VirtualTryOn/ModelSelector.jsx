@@ -1,8 +1,8 @@
 export default function ModelSelector({ model, setModel }) {
   const modelOptions = [
-    { id: 'hd', name: 'HD Model', description: 'High Definition - Best quality' },
-    { id: 'dc', name: 'DC Model', description: 'Deep Clothing - Fast processing' },
-    { id: 'gemini', name: 'Google Gemini', description: 'AI-powered results' }
+    { id: 'hd', name: 'HD Model', description: 'Train on - VITON HD' },
+    { id: 'dc', name: 'DC Model', description: 'Train on - Dress Code' },
+    { id: 'gemini', name: 'Google Vertex AI', description: 'AI-powered results' }
   ];
 
   return (
