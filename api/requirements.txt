@@ -16,3 +16,4 @@ opencv-contrib-python
 mediapipe
 torch
 torchvision
+onnxruntime

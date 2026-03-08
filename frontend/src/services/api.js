@@ -21,7 +21,8 @@ export const virtualTryOnAPI = {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to process virtual try-on with HD model');
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.detail || 'Failed to process virtual try-on with HD model');
     }
 
     return response.json();
@@ -39,7 +40,8 @@ export const virtualTryOnAPI = {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to process virtual try-on with DC model');
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.detail || 'Failed to process virtual try-on with DC model');
     }
 
     return response.json();
@@ -56,7 +58,8 @@ export const virtualTryOnAPI = {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to process virtual try-on with Gemini model');
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.detail || 'Failed to process virtual try-on with Gemini model');
     }
 
     return response.json();

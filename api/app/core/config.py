@@ -9,7 +9,8 @@ class Settings(BaseSettings):
     MODEL_DECISION_TREE_PATH: str
     MODEL_NEURAL_NETWORK_PATH: str
     MODEL_VERSION: str
-    FEATURE_SCALER_PATH: str 
+    FEATURE_SCALER_PATH: str
+    CLOTHING_CLASSIFIER_MODEL_PATH: str
     LOG_LEVEL: str = "INFO"
     GEMINI_API_KEY: str = ""
     GOOGLE_CLOUD_PROJECT: str
