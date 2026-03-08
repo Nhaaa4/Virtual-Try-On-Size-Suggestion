@@ -84,3 +84,5 @@ htmlcov/
 
 # TensorFlow/Keras models (optional - uncomment if you want to exclude)
 # *.keras
+
+DATA
