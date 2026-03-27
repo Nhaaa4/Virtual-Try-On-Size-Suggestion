@@ -10,7 +10,6 @@ from app.services.model_loader import ModelLoader
 from app.services.garment_classifier import init_garment_classifier
 from app.api import size_suggestion as size_routing
 from app.api import virtual_tryon as tryon_routing
-from app.api import body_measurement as body_measurement_routing
 
 
 # Setup logging
@@ -69,7 +68,6 @@ async def root():
 # Include routers
 app.include_router(size_routing.router, prefix="/api/size-suggestion", tags=["Size Suggestion"])
 app.include_router(tryon_routing.router, prefix="/api/virtual-tryon", tags=["Virtual Try-On"])
-app.include_router(body_measurement_routing.router, prefix="/api/body-measurements", tags=["Body Measurement"])
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ export default function VirtualTryOn() {
   const [personPreview, setPersonPreview] = useState(null);
   const [garmentPreview, setGarmentPreview] = useState(null);
   const [category, setCategory] = useState('Upper-body');
-  const [model, setModel] = useState('dc');
+  const [model, setModel] = useState('hd');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

@@ -12,8 +12,6 @@ pydantic_settings
 Pillow
 huggingface-hub
 python-dotenv
-opencv-contrib-python
-mediapipe
 torch
 torchvision
 onnxruntime

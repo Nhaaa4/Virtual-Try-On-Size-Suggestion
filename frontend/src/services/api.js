@@ -103,26 +103,6 @@ export const sizeSuggestionAPI = {
   },
 };
 
-export const bodyMeasurementAPI = {
-  predict: async (front, leftSide, heightCm) => {
-    const formData = new FormData();
-    formData.append('front', front);
-    formData.append('left_side', leftSide);
-    formData.append('height_cm', heightCm);
-
-    const response = await fetch(`${API_BASE_URL}/api/body-measurements/measure`, {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to predict body measurements');
-    }
-
-    return response.json();
-  }
-}
-
 // Utility function to get full image URL
 export const getImageURL = (imagePath) => {
   if (!imagePath) return null;

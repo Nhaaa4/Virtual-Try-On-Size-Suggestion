@@ -95,14 +95,17 @@ api/
    
    Create a `.env` file in the root directory:
    ```env
-   MODEL_DECISION_TREE_PATH="models/decision_tree_model.pkl"
-   MODEL_NEURAL_NETWORK_PATH="models/mlp_model.pkl"
-   MODEL_VERSION="dev"
+   MODEL_DECISION_TREE_PATH=                    # Path to model
+   MODEL_NEURAL_NETWORK_PATH=                   # Path to model
+   FEATURE_SCALER_PATH=                         # Path to model
+   MODEL_VERSION=                               # Version "dev" or "prod"
 
-   GOOGLE_CLOUD_PROJECT=your-gcp-project-id
-   GOOGLE_CLOUD_LOCATION=us-central1
-   GOOGLE_GENAI_USE_VERTEXAI=true
+   GOOGLE_CLOUD_PROJECT=                        # Google Cloud Project ID
+   GOOGLE_CLOUD_LOCATION="us-central1"          # Location in Google Cloud
+   GOOGLE_GENAI_USE_VERTEXAI=True
    VIRTUAL_TRY_ON_MODEL="virtual-try-on-001"
+
+   CLOTHING_CLASSIFIER_MODEL_PATH=              # Path to model
    ```
 
 5. **Authenticate with Hugging Face** (Required for OOTDiffusion)
@@ -171,67 +174,11 @@ api/
    - Swagger UI: http://localhost:8000/docs
    - ReDoc: http://localhost:8000/redoc
 
-## Postman Testing Tips
-
-1. **Environment Variables**: Create a Postman environment with:
-   - `base_url`: `http://localhost:8000`
-   - Then use `{{base_url}}/api/size-suggestion/predict` in requests
-
-2. **Image Testing**: 
-   - Keep test images in a dedicated folder
-   - Use images with clear person and garment visibility
-   - Recommended formats: JPG, PNG
-   - Recommended size: Under 10MB
-
-3. **View Generated Images**: 
-   - The API returns a relative URL in `image_url` field
-   - Access images via: `http://localhost:8000` + `image_url`
-   - Example: `http://localhost:8000/outputs/hd_tryon_abc123.jpg`
-   - You can also browse all outputs at `http://localhost:8000/outputs/`
-
-4. **Error Handling Test Cases**:
-   - Invalid data (negative values, missing fields)
-   - Unsupported file types
-   - Missing API keys (for Gemini endpoints)
-   - Missing authentication (Hugging Face token, Google Cloud credentials)
-
-5. **Collection Export**: Save your Postman collection for reuse:
-   - Click on collection → Export → Collection v2.1
-   - Share with team members
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Models Not Loading**
-   - Ensure `.pkl` files exist in the `models/` directory
-   - Check file paths in `.env` configuration
-
-2. **Gemini API Errors**
-   - Check API quota and billing status
-
-3. **OOTDiffusion Connection Failed**
-   - Check internet connection
-   - Gradio space might be temporarily unavailable
-   - Verify Hugging Face authentication: `huggingface-cli whoami`
-   - Try logging in again: `huggingface-cli login`
-
-4. **File Upload Errors**
-   - Ensure `temp/upload` and `temp/output` directories exist
-   - Check file size limits and permissions
-
-5. **Google Cloud / Vertex AI Errors**
-   - Verify authentication: `gcloud auth list`
-   - Check project is set: `gcloud config get-value project`
-   - Ensure APIs are enabled: `gcloud services list --enabled`
-   - Verify application default credentials: `gcloud auth application-default print-access-token`
-   - Check billing is enabled for your project
-
 ## Technology Stack
 
 - **Framework**: FastAPI
 - **ML Libraries**: scikit-learn, joblib
-- **AI Services**: Gradio Client (OOTDiffusion), Google Gemini
+- **AI Services**: Gradio Client (OOTDiffusion), Google Vertex
 - **Data Validation**: Pydantic
 - **Server**: Uvicorn
 - **Image Processing**: PIL, base64
@@ -244,8 +191,3 @@ This is a capstone project for Cambodia Academy of Digital Technology. For quest
 ## License
 
 This project is developed as part of academic coursework at Cambodia Academy of Digital Technology.
-
----
-
-**Version**: 1.0.0  
-**Last Updated**: February 2026  

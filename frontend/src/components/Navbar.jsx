@@ -6,7 +6,6 @@ export default function Navbar() {
   const navLinks = [
     { path: '/virtual-tryon', name: 'Virtual Try-On' },
     { path: '/size-suggestion', name: 'Size Suggestion' },
-    { path: '/body-measurements', name: 'Body Measurements' }
   ];
 
   return (

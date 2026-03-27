@@ -61,8 +61,8 @@ api/models/mediapipe/*
 *.onnx
 
 # Data Files (optional)
-data/*.csv
-data/*.json
+*.csv
+*.json
 !data/.gitkeep
 
 # Jupyter Notebooks
