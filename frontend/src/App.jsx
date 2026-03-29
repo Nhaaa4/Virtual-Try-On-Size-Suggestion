@@ -7,7 +7,7 @@ import SizeSuggestionPage from './pages/SizeSuggestionPage';
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen text-[#12284c]">
         <Navbar />
         
         <main className="py-8 px-4">

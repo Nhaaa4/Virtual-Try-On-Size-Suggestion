@@ -1,7 +1,7 @@
 export default function ModelTypeSelector({ modelType, setModelType }) {
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-3">
+      <label className="block text-sm font-semibold text-[#12284c] mb-3">
         Prediction Model
       </label>
       <div className="flex gap-4">
@@ -9,8 +9,8 @@ export default function ModelTypeSelector({ modelType, setModelType }) {
           onClick={() => setModelType('decision_tree')}
           className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all ${
             modelType === 'decision_tree'
-              ? 'bg-gray-900 text-white shadow-lg'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-[#12284c] text-white shadow-lg'
+              : 'bg-[#12284c]/10 text-[#12284c] hover:bg-[#12284c]/15'
           }`}
         >
           Decision Tree
@@ -19,8 +19,8 @@ export default function ModelTypeSelector({ modelType, setModelType }) {
           onClick={() => setModelType('neural_network')}
           className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all ${
             modelType === 'neural_network'
-              ? 'bg-gray-900 text-white shadow-lg'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-[#12284c] text-white shadow-lg'
+              : 'bg-[#12284c]/10 text-[#12284c] hover:bg-[#12284c]/15'
           }`}
         >
           Neural Network

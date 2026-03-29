@@ -8,11 +8,11 @@ export default function ModelGallery({
 }) {
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-3">
+      <label className="block text-sm font-semibold text-[#12284c] mb-3">
         Choose Default Model
       </label>
         
-        <div className="border-2 border-gray-300 rounded-xl bg-white overflow-hidden">
+        <div className="border-2 border-[#12284c]/20 rounded-xl bg-white overflow-hidden">
           {/* Models Gallery */}
           <div className="p-3 max-h-[400px] overflow-y-auto">
             <div className="grid grid-cols-2 gap-2">
@@ -22,8 +22,8 @@ export default function ModelGallery({
                   onClick={() => onModelSelect(model)}
                   className={`relative rounded-lg overflow-hidden border-2 transition-all hover:shadow-md ${
                     personPreview === model.path
-                      ? 'border-gray-900 ring-2 ring-gray-900'
-                      : 'border-gray-200 hover:border-gray-400'
+                      ? 'border-[#12284c] ring-2 ring-[#12284c]/35'
+                      : 'border-[#12284c]/15 hover:border-[#12284c]/45'
                   }`}
                   disabled={loading}
                 >
@@ -36,7 +36,7 @@ export default function ModelGallery({
                     }}
                   />
                   {personPreview === model.path && (
-                    <div className="absolute top-1 right-1 bg-gray-900 text-white rounded-full p-1">
+                    <div className="absolute top-1 right-1 bg-[#12284c] text-white rounded-full p-1">
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>

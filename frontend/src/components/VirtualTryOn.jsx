@@ -126,9 +126,9 @@ export default function VirtualTryOn() {
       {!result ? (
         <div className="flex gap-6">
           {/* Main Content Card - Left Side */}
-          <div className="flex-1 bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Virtual Try-On</h2>
-            <p className="text-gray-600 mb-8">Upload your photo and choose a garment to see how it looks on you</p>
+          <div className="flex-1 bg-white rounded-xl shadow-lg p-8 border border-[#12284c]/10">
+            <h2 className="text-3xl font-bold text-[#12284c] mb-2">Virtual Try-On</h2>
+            <p className="text-[#12284c]/75 mb-8">Upload your photo and choose a garment to see how it looks on you</p>
 
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
@@ -170,7 +170,7 @@ export default function VirtualTryOn() {
                 <button
                   onClick={handleTryOn}
                   disabled={!personImage || !garmentImage || loading}
-                  className="w-full px-8 py-4 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
+                  className="w-full px-8 py-4 bg-[#12284c] text-white font-semibold rounded-lg hover:bg-[#0d1f3b] disabled:bg-[#12284c]/30 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#12284c]/35"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -219,7 +219,7 @@ export default function VirtualTryOn() {
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <div className="bg-white rounded-xl shadow-lg p-8 border border-[#12284c]/10">
           <ResultDisplay result={result} model={model} onReset={resetForm} />
         </div>
       )}

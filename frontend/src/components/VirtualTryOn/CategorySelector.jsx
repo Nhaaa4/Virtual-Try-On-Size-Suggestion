@@ -3,7 +3,7 @@ export default function CategorySelector({ category, setCategory }) {
 
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-3">
+      <label className="block text-sm font-semibold text-[#12284c] mb-3">
         Garment Category
       </label>
       <div className="flex gap-3">
@@ -13,8 +13,8 @@ export default function CategorySelector({ category, setCategory }) {
             onClick={() => setCategory(cat)}
             className={`px-6 py-2 rounded-lg font-medium text-sm transition-all ${
               category === cat
-                ? 'bg-gray-900 text-white shadow-lg'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-[#12284c] text-white shadow-lg'
+                : 'bg-[#12284c]/10 text-[#12284c] hover:bg-[#12284c]/15'
             }`}
           >
             {cat}
